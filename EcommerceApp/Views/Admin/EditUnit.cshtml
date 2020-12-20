@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewBag.Title = "EditUnit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit Unit</h2>
+
+
+<form action="/Admin/UnitOk/@Model.Id" method="post">
+    Name:
+    <input type="text" name="name" value="@Model.Name" /><br />
+    
+    <input type="submit" name="submit" value="Add" />
+</form>

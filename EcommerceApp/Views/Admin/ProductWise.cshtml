@@ -1,0 +1,106 @@
+﻿@model IEnumerable<EcommerceApp.Models.Product>
+@{
+    ViewBag.Title = "AllSales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<head>
+    
+
+    <link href="~/css/inputstyle.css" rel="stylesheet" />
+</head>
+<body>
+<div>
+    <h1>Product Wise Report Generator</h1>
+    @*<form action="/Client/Delete" method="get">
+        <button type="submit" class="btn btn-primary">View Your Cart</button>
+    </form>*@
+</div>
+    <input class="form-control" type="text" id="myInput"  onkeyup="search()" placeholder="Search for names.." title="Type in a name">
+
+<table id="myTable" class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>ID>
+        <th>Name</th>
+        <th>Unit</th>
+        <th>Category</th>    
+        <th>Picture</th>    
+        <th>Price</th>    
+        <th>Delete</th>    
+       
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var element in Model)
+    {
+        <tr>
+            <td>@element.Id</td>
+            <td>@element.Name</td>  
+            <td>@element.Unit</td>
+            <td>@element.Category</td>
+                        
+            <td>
+                <a href="~/File/@Path.GetFileName(element.ImagePath)">
+               
+                    <img src="~/File/@Path.GetFileName(element.ImagePath)" width="200" height="200" />
+                         
+                </a>
+            </td>
+            
+            <td>@element.Price</td>
+            <td>
+                <form action="/Admin/deleteProduct/@element.Id" method="post">
+                    <button type="submit" class="btn btn-primary  ">Delete Product</button>
+                </form>
+            </td>
+            
+           
+            @*<td>
+                <form action="/Client/AddtoCart/@element.Price" method="post">
+                    <button type="submit" class="btn btn-primary">Add to Cart</button>
+                    <input type="number" name="quantity" value="1" min="1" max="20" oninput="validity.valid || (value = '-');"/>
+                
+                </form>
+            
+            </td>*@
+            
+          
+
+        </tr>
+    }
+    </tbody>
+</table>
+<br />
+<hr/>
+@{
+    string action = System.Web.HttpContext.Current.Request.RequestContext.RouteData.GetRequiredString("action");
+}
+<form method="get" onclick="window.print()" >
+    <button type="submit" class="btn btn-primary bottom-right">Generate Report</button>
+</form> 
+
+<script>
+    function search() {
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("myTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[1];
+            if (td) {
+                txtValue = td.textContent || td.innerText;
+                if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }       
+        }
+    }
+
+</script>
+</body>

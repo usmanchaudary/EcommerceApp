@@ -1,0 +1,72 @@
+﻿@model EcommerceApp.ViewModel.MultiTableView
+@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<style>
+    .dropbtn {
+        background-color: #4CAF50;
+        color: white;
+        padding: 16px;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 160px;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+        .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+
+            .dropdown-content a:hover {
+                background-color: #f1f1f1;
+            }
+
+    .dropdown:hover .dropdown-content {
+        display: block;
+    }
+
+    .dropdown:hover .dropbtn {
+        background-color: #3e8e41;
+    }
+</style>
+
+@using (Html.BeginForm("UploadStudentPhoto", "Admin", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+{
+
+
+
+    <h4>Name</h4>
+    <input class="form-control" type="text" name="name" required autofocus />
+
+    <h4>Units</h4>
+    @Html.DropDownList("Units", ViewBag.l as SelectList, "please select a unit", new { @class = "form-control" });
+
+    <h4>Catogories</h4>
+    @Html.DropDownList("Categories ", ViewBag.l1 as SelectList, "please select a Category", new { @class = "form-control" });
+    <br />
+    <h4>Price</h4>
+    <input class="form-control" type="number" min="0" name="price" required oninput="validity.valid || (value = '-');" />
+    <br />
+    <label>Choose File</label>
+    <input required type="file" id="userFile" class="form-control" name="userFile" /><br/>
+    <button class="btn btn-primary" type="submit" >Upload file</button>
+}

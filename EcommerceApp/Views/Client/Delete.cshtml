@@ -1,0 +1,65 @@
+﻿@model IEnumerable<EcommerceApp.Models.Cart>
+
+@{
+    ViewBag.Title = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Your Cart</h2>
+@if (!Model.Any())
+{
+    <p>you haven't added any products into your cart yet</p>
+}
+else
+{
+    <table class="table table-bordered table-hover">
+        <thead>
+        <tr>
+            <th>Product Quantity</th>
+            <th>Name</th>
+            <th>Price</th>
+
+            <th></th>
+
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var element in Model)
+        {
+            <tr>
+                <td>@element.Quantity</td>
+                <td>@element.Product.Name</td>
+                <td>@element.Product.Price</td>
+
+                <form action="/Client/DeleteCart/@element.Id" method="post">
+                    <td>
+                        <button type="submit" class="btn btn-primary">Delete Order</button>
+
+                    </td>
+                </form>
+
+
+
+
+            </tr>
+        }
+        </tbody>
+    </table>
+    <hr/>
+    <footer style="background: #2b3e50; width: 100%" class="row container-fluid">
+        <div class="col-md-">
+
+        </div>
+        <div class="col-md-4">
+            <p> <strong> Total Bill is:</strong><b> @Model.Sum(x => Convert.ToInt32(x.Product.Price))</b></p>
+            <form></form>
+
+        </div>
+
+        <form action="/Client/CheckOut" method="post">
+            <div class="col-md-8">
+                <button class="btn btn-primary">Check Out </button>
+            </div>
+        </form>
+    </footer>
+}

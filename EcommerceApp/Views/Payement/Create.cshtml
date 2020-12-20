@@ -1,0 +1,213 @@
+﻿@model IEnumerable<EcommerceApp.Models.Cart>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>stripe form</title>
+    
+    <style media="screen">
+        .green {
+            border: solid green 1px;
+        }
+
+        .error {
+            border: solid red 1px;
+        }
+    </style>
+</head>
+@*@if (!Model.Any())
+{
+    <p>You haven't purchased anything Yet. Goto<a href="/Client/Index">Product</a>Page to Buy </p>
+}
+else
+{*@
+    <body>
+    <script src="https://js.stripe.com/v3/"></script>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-sm offset-3">
+                <h2>stripe Form</h2>
+                <form action="/Payement/CreateOk" method="post" id="payment-form">
+
+                    <div class="form-group">
+                        <label for="card-name">Card Name</label>
+                        <input type="name" name="cardName" class="form-control" id="card-name"
+                               placeholder="Card Name">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Email">Email</label>
+                        <input type="email" name="Email" class="form-control" id="Email"
+                               placeholder="Email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="Phone">Phone Number</label>
+                        <input type="tel" name="Phone" class="form-control" id="Phone"
+                               placeholder="Phone Number">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="card-number">
+                            Credit or debit card
+                        </label>
+                        <div id="card-number">
+                            <!-- A Stripe El ement will be inserted here. -->
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label for="card-cvc">
+                                    cvc
+                                </label>
+                                <div id="card-cvc">
+                                    <!-- A Stripe El ement will be inserted here. -->
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="card-exp">
+                                    expiration
+                                </label>
+                                <div id="card-exp">
+                                    <!-- A Stripe El ement will be inserted here. -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Used to display form errors. -->
+                    <div id="card-errors" role="alert"></div>
+
+                    <div class="form-group">
+                        <button class="form-control btn btn-primary">Submit Payment</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @section stripe
+    {
+        <script>
+            var stripe = Stripe('pk_test_EXjZ3QNtKGJmDS1g6CYYQSHA00oTE93ZIx');
+
+            // Create an instance of Elements.
+            var elements = stripe.elements();
+
+            // Custom styling can be passed to options when creating an Element.
+            // (Note that this demo uses a wider set of styles than the guide below.)
+            var style = {
+                base: {
+                    color: '#32325d',
+                    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                    fontSmoothing: 'antialiased',
+                    fontSize: '16px',
+                    '::placeholder': {
+                        color: '#aab7c4'
+                    }
+                },
+                invalid: {
+                    color: '#fa755a',
+                    iconColor: '#fa755a'
+                }
+            };
+
+            // Create an instance of the card Element.
+            var card = elements.create('cardNumber',
+                {
+                    classes: {
+                        base: "form-control",
+                        focus: "green",
+                        invalid: "error"
+                    },
+                    style: {
+                        base: {
+                            color: "blue"
+                        }
+                    }
+                });
+
+            var cvc = elements.create('cardCvc',
+                {
+                    classes: {
+                        base: "form-control",
+                        focus: "green",
+                        invalid: "error"
+                    },
+                    style: {
+                        base: {
+                            color: "blue"
+                        }
+                    }
+                });
+
+            var exp = elements.create('cardExpiry',
+                {
+                    classes: {
+                        base: "form-control",
+                        focus: "green",
+                        invalid: "error"
+                    },
+                    style: {
+                        base: {
+                            color: "blue"
+                        }
+                    }
+                });
+
+            // Add an instance of the card Element into the `card-element` <div>.
+            card.mount('#card-number');
+            cvc.mount('#card-cvc');
+            exp.mount('#card-exp');
+
+            // Handle real-time validation errors from the card Element.
+            card.addEventListener('change',
+                function(event) {
+                    var displayError = document.getElementById('card-errors');
+                    if (event.error) {
+                        displayError.textContent = event.error.message;
+                    } else {
+                        displayError.textContent = '';
+                    }
+                });
+
+            // Handle form submission.
+            var form = document.getElementById('payment-form');
+            form.addEventListener('submit',
+                function(event) {
+                    event.preventDefault();
+
+                    stripe.createToken(card).then(function(result) {
+                        if (result.error) {
+                            // Inform the user if there was an error.
+                            var errorElement = document.getElementById('card-errors');
+                            errorElement.textContent = result.error.message;
+                        } else {
+                            // Send the token to your server.
+                            stripeTokenHandler(result.token);
+                        }
+                    });
+                });
+
+            // Submit the form with the token ID.
+            function stripeTokenHandler(token) {
+                // Insert the token ID into the form so it gets submitted to the server
+                var form = document.getElementById('payment-form');
+                var hiddenInput = document.createElement('input');
+                hiddenInput.setAttribute('type', 'hidden');
+                hiddenInput.setAttribute('name', 'stripeToken');
+                hiddenInput.setAttribute('value', token.id);
+                form.appendChild(hiddenInput);
+
+                // Submit the form
+                form.submit();
+            }
+        </script>
+    }
+
+    </body>
+

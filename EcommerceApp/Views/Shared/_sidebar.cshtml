@@ -1,0 +1,119 @@
+﻿@using Microsoft.AspNet.Identity;
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <link href="~/css/adminstyle.css" rel="stylesheet" />
+
+</head>
+<body onload="myFunction()">
+<style>
+    
+    </style>
+<div id="mySidenav" class="sidenav">
+   
+
+    <img src="~/Images/E-Commerce-Summit-LOGO.png" alt="ecom_logo" height="60" width="180" style="margin-left: 15px"/>
+    <a href="javascript:void(0)" id="cross" class="closebtn" onclick="closeNav()">&times;</a>
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class="navbar-nav" style="margin-left: -40px">
+                <li class="dropdown" >
+                    <a id="cli" href="#" style="margin-left:-16px">Admin Panel<span class="caret admin"></span></a>
+                    <ul id="show" style="display: block; list-style-type: none; margin-left:-55px;">
+                        <li><a href="/Admin/Index"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                        <li><a href="/Admin/Adminlte"><span class="glyphicon glyphicon-user"></span> Add User</a></li>
+                        <li><a href="/Admin/Units"><span class="glyphicon glyphicon-cloud"></span> Create Units</a></li>
+                        <li><a href="/Admin/Product"><span class="glyphicon glyphicon-apple"></span> Create Products</a></li>
+                        <li><a href="/Admin/Category"><span class="glyphicon glyphicon-barcode"></span> Create Categories</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+
+        <div class="collapse navbar-collapse" id="myNavbar">
+            <ul class=" navbar-nav" style="margin-left: -40px">
+                <li class="dropdown">
+                    <a id="reports" href="#" style="margin-left:-16px">Reports<span class="caret admin"></span></a>
+                    <ul id="showreports" style="display: block; list-style-type: none; margin-left:-55px;">
+                        <li><a href="/Admin/ProductWise"><span class="glyphicon glyphicon-apple"></span> Product Wise</a></li>
+                        <li><a href="/Admin/AllSales"><span class="glyphicon glyphicon-calendar"></span> Date Wise</a></li>
+                        <li><a href="/Admin/AllSales"><span class="glyphicon glyphicon-sort-by-order"></span> All Order History</a></li>
+                        <li><a href="/Admin/AllSales"><span class="glyphicon glyphicon-sort-by-attributes"></span> All Transection History</a></li>
+                        <li><a href=""><span class="glyphicon glyphicon-sort-by-alphabet" ></span> Ledger</a></li>
+                        <li><a href=""><span class="glyphicon glyphicon-sort-by-order-alt"></span> Party Ledger Also</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    }
+    <br/>
+    @if (User.IsInRole("User"))
+    {
+        <li>@Html.ActionLink("MyOrders", "MyOrders", "Client")</li>
+    }
+    @if (User.IsInRole("Admin"))
+    {
+        <a href="/Admin/AllSales"><span class="glyphicon glyphicon-credit-card"></span> Sales</a>
+    }
+    @if (!(User.IsInRole("Admin")))
+    {
+        <a href="/Client/CheckOut"><span class="glyphicon glyphicon-credit-card"></span> Check Out</a>
+        <a href="/Client/Delete"><span class="glyphicon glyphicon-shopping-cart"></span> Check Your Cart</a>
+    }
+     <a href="/Client/MyOrders"><span class="glyphicon glyphicon-apple"></span> My Orders</a>
+    <a href="/Home/About"><span class="glyphicon glyphicon-info-sign"></span> About</a>
+    <a href="/Home/Contact"><span class="glyphicon glyphicon-phone"></span>Contact</a>
+</div>
+
+<div id="main">
+    <br/>
+    <span style="font-size:20px; cursor: pointer;display:none" id="menu"   onclick="opennav()">&#9776; MENU</span>
+</div>
+
+<script>
+    function myFunction() {
+        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("main").style.marginLeft = "250px";
+    }
+        
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+        document.getElementById("main").style.marginLeft = "0";
+        $('#cross').css("display", "none");
+        $('#menu').css("display", "block");
+    }
+    function opennav() {
+        document.getElementById("mySidenav").style.width = "250px";
+        document.getElementById("main").style.marginLeft = "250px";
+        $('#menu').css("display","none");
+        $('#cross').css("display", "block");
+    }
+
+    $(document).ready(function() {
+        $("#cli").click(function () {
+            $("#show").toggle("slow");
+        });
+    });
+
+    $(document).ready(function () {
+        $("#reports").click(function () {
+            $("#showreports").toggle("slow");
+        });
+    });
+    $("#menu").on('click', function() {
+       
+    });
+    $("#cross").on('click', function () {
+
+    });
+</script>
+
+
+
+</body>
+
+

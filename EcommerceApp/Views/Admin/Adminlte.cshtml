@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "Adminlte";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<h2>Add Employees</h2>
+@*<form action="/Admin/Add" method="post">*@
+    
+@*Name:
+      <input type="text" name="name"  required autocomplete="off" autofocus/><br />
+    Password:
+    <input type="password" name="Password" required autocomplete="off"/><br />
+    </form>*@
+<button class="btn btn-primary"><a href="/Account/Register" style="color: #fff">Add User</a></button>
+@model IEnumerable<EcommerceApp.Models.AspNetUser>
+<table class="table table-bordered table-hover">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Client Name</th>
+        <th>Hashed Password </th>
+        <th></th>    
+
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var element in Model)
+    {
+        <tr>
+            <td>@element.Id</td>
+            <td>@element.UserName</td>  
+            <td>@element.PasswordHash</td>
+           @* <td><a href="/Admin/Edit/@element.Id">Edit</a></td>*@
+            <td><a href="/Admin/delete/@element.Id">Delete</a></td>
+          
+
+        </tr>
+    }
+    </tbody>
+</table>

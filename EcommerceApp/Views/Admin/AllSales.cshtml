@@ -1,0 +1,107 @@
+﻿@using System.Web.UI.WebControls
+@model IEnumerable<EcommerceApp.Models.Sale>
+
+@{
+    ViewBag.Title = "AllSales";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<head>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+</head>
+<h2>AllSales</h2>
+<form action="/Admin/SearchByDate" method="get">
+    <label>From</label><br />
+    <input onkeyup="myFunction()" type="text" value="07/23/2016" required  placeholder="MM/DD/YYYY " name="dates" id="myInput" /><br />
+    <label>To</label><br />
+    <input type="text" placeholder="MM/DD/YYYY " value="@DateTime.Today" required name="to" id="myInput" /><br />
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+@{var listItems = new List<ListItem>
+  {
+      new ListItem { Text = "Select Status", Value="Pending" },
+      new ListItem { Text = "Delieverd", Value="Delieverd" },
+      new ListItem { Text = "Pending", Value="Pending" },
+     
+  };
+}
+
+<table class="table table-hover" id="myTable">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sales_person_name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Unit)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Category)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.gst)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Discount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Date)
+        </th>
+        <th>@Html.DisplayNameFor(model => model.Status)</th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sales_person_name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Unit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.gst)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Discount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Date)
+        </td>
+            <td>
+                <form action="/Admin/change/@item.Id" method="get">
+    @Html.DropDownList("Exemplo", new SelectList(listItems, "Value", "Text"), new { @class = "form-control",@onchange="form.submit()" })
+                </form>
+                </td>
+            
+            
+        </tr>
+    }
+
+</table>
+<p>Total Sales Amount til this time<b> @Model.Sum(x => x.Amount)</b></p>
+
+

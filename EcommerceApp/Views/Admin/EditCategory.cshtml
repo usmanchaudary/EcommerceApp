@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "EditCategory";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>EditCategory</h2>
+
+<form action="/Admin/EditCategoryOk/@Model.Id" method="post">
+    Name:
+    <input type="text" name="name" value="@Model.Name" /><br />
+
+    <input type="submit" name="submit" value="Add" />
+</form>

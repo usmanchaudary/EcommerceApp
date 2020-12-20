@@ -1,0 +1,81 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - EcommerceApp</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    
+
+
+
+</head>
+<body id="main">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container container-fluid">
+            <div class="navbar-header">
+
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Ecommerce Application", "Index", "Home", new {area = ""}, new {@class = "navbar-brand"})
+
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    @*<li>@Html.ActionLink("About", "About", "Home")</li>
+                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+
+                </ul>
+
+                @Html.Partial("_LoginPartial")
+            </div>
+        </div>
+    </div>
+    <div>
+
+        @{
+            Html.RenderAction("NavigationController", "Test");
+        }
+        @*@if (Request.IsAuthenticated)
+            {
+
+                {
+
+
+                }
+            }*@
+    </div>
+    @{
+        string action = System.Web.HttpContext.Current.Request.RequestContext.RouteData.GetRequiredString("action");
+
+        string Controller = System.Web.HttpContext.Current.Request.RequestContext.RouteData.GetRequiredString("controller");
+
+    }
+    <div class="breadcrumb container">
+        <h3>
+            @Controller/@action
+        </h3>
+    </div>
+    <div class="container">
+
+        @RenderBody()
+
+        <hr />
+        <footer>
+            <p>© 2019 -ABC Technologies </p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/admin-lte/js")
+    @RenderSection("scripts", required: false)
+    @RenderSection("stripe", required: false)
+</body>
+</html>

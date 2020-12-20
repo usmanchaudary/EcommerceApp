@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Units";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create Units</h2>
+<form action="/Admin/UnitsOk">
+    <label>Name</label><br />
+    <input class="form-control" type="text" name="name" required autofocus /><br />
+
+    <button type="submit" class="btn btn-primary">Add</button>
+</form>
+@model IEnumerable<EcommerceApp.Models.Unit>
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>ID>
+            <th>Unit Name</th>
+            <th></th>
+            <th></th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var element in Model)
+        {
+            <tr>
+                <td>@element.Id</td>
+                <td>@element.Name</td>              
+                <td><a href="/Admin/EditUnit/@element.Id">Edit</a></td>
+                <td><a href="/Admin/deleteUnit/@element.Id">Delete</a></td>
+
+
+            </tr>
+        }
+    </tbody>
+</table>
